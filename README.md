@@ -18,3 +18,11 @@
 
 ### JS animation
 - `assets/js/nav.js` also draws a red, fading laser trail when you click-drag on the page (canvas overlay with a fade loop).
+
+
+```
+Note:
+These files were previously from another repo for my personal website.
+This website started off following a template, and as time went on, I completely custom rewrote the website.
+Conflicts with the original template code in the repo prompted me to move my new clean code here.
+```
