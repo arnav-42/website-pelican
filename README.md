@@ -1,20 +1,27 @@
 ## Site: www.arnav.id
 [![CI](https://github.com/arnav-42/personalwebsite/actions/workflows/ci.yml/badge.svg)](https://github.com/arnav-42/personalwebsite/actions/workflows/ci.yml)
+
+Now powered by [Pelican](https://getpelican.com) for templating and content management.
+
 ### Stack
-- Static HTML/CSS/JS
-- Cloudflare Pages hosting
+- Pelican (Python static site generator)
+- Custom Pelican theme in `theme/` (reuses existing CSS/JS)
+- Cloudflare Pages hosting (build produces `output/`)
 
 ### Structure
-- `/index.html` home
-- `/research.html`, `/repositories.html`, `/notes.html`, `/blog.html`, `/contact.html`, `/tools.html`
-- Assets in `assets/css`, `assets/js`, `assets/img`, and `assets/materials`.
-- Notes PDFs in `notes/`
+- `content/pages/*.md` — page content (Home, Research, Notes, Repositories, Blog, Contact, Tools)
+- `content/assets/` — CSS, JS, images, research PDFs
+- `content/notes/` — course PDFs
+- `theme/templates/` — Jinja templates (`base.html`, `page.html`, `article.html`)
+- `pelicanconf.py` — local/dev config (uses relative URLs)
+- `publishconf.py` — production config (set `SITEURL` via env)
 
-### Notes roadmap
-- I may split notes into a separate repo and use GitHub Actions to sync or publish them into `notes/` here for easier updates.
+### Local usage
+1) Install deps (Python 3.9+): `python -m pip install -r requirements.txt`
+2) Build: `pelican content`
+3) Preview: `pelican --listen` (serves `output/` at http://localhost:8000)
 
-### Future themes
-- I discovered Jekyll after this refactor. I might migrate to a Jekyll theme in the future for templating and easier content management.
+For production builds use `pelican content -s publishconf.py` with `SITEURL` exported.
 
 ### JS animation
-- `assets/js/nav.js` also draws a red, fading laser trail when you click-drag on the page (canvas overlay with a fade loop).
+- `content/assets/js/nav.js` keeps the dropdown + red laser trail canvas overlay.

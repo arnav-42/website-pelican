@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page and page.title %}{{ page.title }} | {{ SITENAME }}{% else %}{{ SITENAME }}{% endif %}</title>
+  <link rel="stylesheet" href="{{ SITEURL }}/assets/css/styles.css?v=20241214">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <nav>
+    <a href="{{ SITEURL }}/">Home</a>
+    <a href="{{ SITEURL }}/research.html">Research</a>
+    <a href="{{ SITEURL }}/notes.html">Notes</a>
+    <a href="{{ SITEURL }}/repositories.html">Repositories</a>
+    <a href="{{ SITEURL }}/contact.html">Contact</a>
+    <div class="nav-more">
+      <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false">More ▾</button>
+      <div class="nav-more-menu" role="menu">
+        <a href="{{ SITEURL }}/blog.html" role="menuitem">Blog</a>
+        <a href="{{ SITEURL }}/tools.html" role="menuitem">Tools</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="{{ SITEURL }}/assets/js/nav.js?v=20241214"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

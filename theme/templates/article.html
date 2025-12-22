@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <article>
+    <header class="section">
+      <h1>{{ article.title }}</h1>
+      {% if article.date %}
+        <p class="date">Published {{ article.date.strftime("%B %d, %Y") }}</p>
+      {% endif %}
+    </header>
+    <section class="section">
+      {{ article.content }}
+    </section>
+  </article>
+{% endblock %}
