@@ -1,5 +1,6 @@
 ## Site: www.arnav.id
-[![CI](https://github.com/arnav-42/personalwebsite/actions/workflows/ci.yml/badge.svg)](https://github.com/arnav-42/personalwebsite/actions/workflows/ci.yml)
+[![CI](https://github.com/arnav-42/website/actions/workflows/ci.yml/badge.svg)](https://github.com/arnav-42/website/actions/workflows/ci.yml)
+
 
 I now use [Pelican](https://getpelican.com) for templating and content management.
 
@@ -18,5 +19,3 @@ I now use [Pelican](https://getpelican.com) for templating and content managemen
 
 ### History
 These files were originally from another personal-website repo and have been fully rewritten here to avoid conflicts with the older template code.
-## Site: www.arnav.id
-[![CI](https://github.com/arnav-42/personalwebsite/actions/workflows/ci.yml/badge.svg)](https://github.com/arnav-42/personalwebsite/actions/workflows/ci.yml)
