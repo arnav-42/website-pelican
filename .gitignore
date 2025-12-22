@@ -18,3 +18,6 @@ _site/
 Gemfile.lock
 
 *.env
+*DOCS.md
+*docs.md
+
