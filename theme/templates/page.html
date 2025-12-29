@@ -1,6 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {{ page.content }}
-{% endblock %}
+<div class="post">
+  {% if page.slug == 'home' or page.save_as == 'index.html' %}
+  {# About/Home Page - Matching al-folio about layout #}
+  <header class="post-header">
+    <h1 class="post-title">
+      <span class="font-weight-bold">{{ AUTHOR.split()[0] }}</span> {{ AUTHOR.split()[1] if AUTHOR.split()|length > 1 else '' }}
+    </h1>
+    <p class="desc text-muted">Engineering Student · Purdue University</p>
+  </header>
   
+  <article>
+    <div class="profile float-right">
+      <div class="profile-slideshow" onclick="nextProfileImage()">
+        <img class="img-fluid z-depth-1 rounded profile-img active" src="{{ SITEURL }}/assets/img/me.jpg" alt="Profile photo 1">
+        <img class="img-fluid z-depth-1 rounded profile-img" src="{{ SITEURL }}/assets/img/me2.jpg" alt="Profile photo 2">
+        <img class="img-fluid z-depth-1 rounded profile-img" src="{{ SITEURL }}/assets/img/me3.jpg" alt="Profile photo 3">
+        <div class="slideshow-dots">
+          <span class="dot active" onclick="event.stopPropagation(); showProfileImage(0)"></span>
+          <span class="dot" onclick="event.stopPropagation(); showProfileImage(1)"></span>
+          <span class="dot" onclick="event.stopPropagation(); showProfileImage(2)"></span>
+        </div>
+      </div>
+      <div class="more-info">
+        <p>NYC Metro Area</p>
+        <p>akalekar@purdue.edu</p>
+      </div>
+    </div>
+    
+    <div class="clearfix">
+      {{ page.content }}
+    </div>
+    
+    {# Social Icons #}
+    <div class="social">
+      <div class="contact-icons">
+        <a href="mailto:akalekar@purdue.edu" title="email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://github.com/arnav-42" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/arnavkalekar" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+  </article>
+  
+  {% else %}
+  {# Regular Page #}
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+  </header>
+  
+  <article>
+    {{ page.content }}
+  </article>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,149 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Arnav Kalekar",
+    "label": "Computer Engineering Undergraduate",
+    "email": "akalekar@purdue.edu",
+    "phone": "917-370-8716",
+    "location": {
+      "city": "West Lafayette",
+      "region": "IN",
+      "countryCode": "US"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "arnav-42",
+        "url": "https://github.com/arnav-42"
+      }
+    ]
+  },
+  "education": [
+    {
+      "institution": "Purdue University",
+      "location": "West Lafayette, IN",
+      "studyType": "Bachelor of Science",
+      "area": "Computer Engineering",
+      "startDate": "2023-08",
+      "endDate": "2027-05",
+      "summary": "Minors: Mathematics, AI/ML",
+      "courses": [
+        "Ordinary Differential Equations",
+        "Discrete Mathematics",
+        "Python for Data Science"
+      ]
+    }
+  ],
+  "work": [
+    {
+      "name": "Lambda Capital",
+      "location": "Remote",
+      "position": "Quantitative Investment Analyst Intern",
+      "startDate": "2025-10",
+      "endDate": "",
+      "highlights": [
+        "Built data pipelines to identify special situations investment opportunities, utilizing transformer-based natural language processing models and advanced statistical analysis on alternative data."
+      ]
+    },
+    {
+      "name": "Wealthstone Group",
+      "location": "Saddle Brook, NJ",
+      "position": "Alternative Investments Summer Intern",
+      "startDate": "2025-05",
+      "endDate": "2025-08",
+      "highlights": [
+        "Designed client-facing real investment pitch decks and proposals for high-net-worth investors.",
+        "Implemented Monte Carlo simulations in Python to model portfolio return distributions and stress-test risk factor assumptions, improving precision of downside risk estimates.",
+        "Built a performance attribution framework to evaluate whether private real estate investments generated persistent risk-adjusted alpha relative to public REIT benchmarks."
+      ]
+    },
+    {
+      "name": "Purdue University",
+      "location": "West Lafayette, IN",
+      "position": "Undergraduate Researcher (AMT)",
+      "startDate": "2025-08",
+      "endDate": "",
+      "highlights": [
+        "Building a multimodal artificial intelligence system (computer vision, FFT audio analysis) for converting guitar performance video into sheet music, advised by Dr. Yung-Hsiang Lu and Dr. Kristen Yeon-Ji Yun."
+      ]
+    },
+    {
+      "name": "Purdue University",
+      "location": "West Lafayette, IN",
+      "position": "Teaching Assistant",
+      "startDate": "2025-08",
+      "endDate": "",
+      "highlights": [
+        "Held office hours twice a week to tutor students for ECE 20001: Electrical Engineering Fundamentals.",
+        "Taught phasors and complex impedance, fundamental transistor operation, transformer principles, and more."
+      ]
+    },
+    {
+      "name": "HP Ventures",
+      "location": "",
+      "position": "Deal Sourcing and Startup Analysis Extern",
+      "startDate": "",
+      "endDate": "",
+      "highlights": []
+    },
+    {
+      "name": "G2i",
+      "location": "",
+      "position": "Software Engineer (Contract)",
+      "startDate": "",
+      "endDate": "",
+      "highlights": []
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "Quantitative Finance Club",
+      "location": "West Lafayette, IN",
+      "position": "Project Lead",
+      "startDate": "2024-08",
+      "endDate": "",
+      "highlights": [
+        "Designed and led project for cross-exchange and triangular arbitrage algorithm for large-cap coins.",
+        "Developed and backtested several trading and portfolio optimization strategies."
+      ]
+    },
+    {
+      "organization": "Engineers Without Borders",
+      "position": "Structures Engineering Member",
+      "startDate": "2023-09",
+      "endDate": "2025-05",
+      "highlights": []
+    }
+  ],
+  "projects": [
+    {
+      "name": "Trading and Portfolio Management Whitepaper",
+      "type": "Whitepaper",
+      "url": "https://dx.doi.org/10.2139/ssrn.5152243",
+      "roles": ["Lead Author"],
+      "highlights": [
+        "Published a paper on Markov models and the markets in the Quant Methods and Global Investments journal.",
+        "Backtested various Markov model trading strategies on industrial and precious metals futures."
+      ]
+    },
+    {
+      "name": "US Bond Yield Time Series Forecasting",
+      "type": "Project",
+      "url": "https://github.com/arnav-42/bond-yield-prediction",
+      "roles": ["Personal Project"],
+      "highlights": [
+        "Forecasted 10-year bond yield rates to an accuracy of 0.06 basis points using machine learning algorithms."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "Financial",
+      "keywords": ["Bloomberg Terminal", "Capital IQ", "Excel"]
+    },
+    {
+      "name": "Technical",
+      "keywords": ["Python (PyTorch, scikit-learn)", "SQL", "OpenCV", "MATLAB", "Julia"]
+    }
+  ]
+}

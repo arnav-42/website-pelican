@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="post">
+  <header class="post-header">
+    <h1 class="post-title">cv</h1>
+    {% if cv_data and cv_data.basics %}
+    <p class="post-description">{{ cv_data.basics.label }}</p>
+    {% endif %}
+  </header>
+  
+  {% if not cv_data %}
+  <article>
+    <p>Add your details to <code>content/assets/json/resume.json</code> following the <a href="https://jsonresume.org/schema/" target="_blank">JSON Resume</a> standard.</p>
+  </article>
+  {% else %}
+  <article>
+    <div class="row">
+      <!-- TOC Sidebar -->
+      <div class="col-md-3 d-none d-md-block">
+        <nav class="cv-toc sticky-top" style="top: 70px;">
+          {% if cv_data.basics %}<a class="toc-link" href="#basics">Basics</a>{% endif %}
+          {% if cv_data.education and cv_data.education|length > 0 %}<a class="toc-link" href="#education">Education</a>{% endif %}
+          {% if cv_data.work and cv_data.work|length > 0 %}<a class="toc-link" href="#work">Work</a>{% endif %}
+          {% if cv_data.projects and cv_data.projects|length > 0 %}<a class="toc-link" href="#projects">Projects</a>{% endif %}
+          {% if cv_data.skills and cv_data.skills|length > 0 %}<a class="toc-link" href="#skills">Skills</a>{% endif %}
+          {% if cv_data.interests and cv_data.interests|length > 0 %}<a class="toc-link" href="#interests">Interests</a>{% endif %}
+          {% if cv_data.basics.profiles and cv_data.basics.profiles|length > 0 %}<a class="toc-link" href="#profiles">Profiles</a>{% endif %}
+        </nav>
+      </div>
+      
+      <!-- Main CV Content -->
+      <div class="col-md-9">
+        <div class="cv">
+          {# Basics Card #}
+          {% if cv_data.basics %}
+          <a class="anchor" id="basics"></a>
+          <div class="card mt-3 p-3">
+            <h3 class="card-title font-weight-medium">Basics</h3>
+            <div>
+              <table class="table table-sm table-borderless table-cv-map">
+                <tbody>
+                  {% if cv_data.basics.name %}
+                  <tr>
+                    <td class="p-1 pr-2 font-weight-bold"><b>Name</b></td>
+                    <td class="p-1 pl-2 font-weight-light text">{{ cv_data.basics.name }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if cv_data.basics.label %}
+                  <tr>
+                    <td class="p-1 pr-2 font-weight-bold"><b>Label</b></td>
+                    <td class="p-1 pl-2 font-weight-light text">{{ cv_data.basics.label }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if cv_data.basics.email %}
+                  <tr>
+                    <td class="p-1 pr-2 font-weight-bold"><b>Email</b></td>
+                    <td class="p-1 pl-2 font-weight-light text"><a href="mailto:{{ cv_data.basics.email }}">{{ cv_data.basics.email }}</a></td>
+                  </tr>
+                  {% endif %}
+                  {% if cv_data.basics.location %}
+                  <tr>
+                    <td class="p-1 pr-2 font-weight-bold"><b>Location</b></td>
+                    <td class="p-1 pl-2 font-weight-light text">
+                      {% if cv_data.basics.location.city %}{{ cv_data.basics.location.city }}{% endif %}{% if cv_data.basics.location.region %}, {{ cv_data.basics.location.region }}{% endif %}{% if cv_data.basics.location.countryCode %}, {{ cv_data.basics.location.countryCode }}{% endif %}
+                    </td>
+                  </tr>
+                  {% endif %}
+                  {% if cv_data.basics.url %}
+                  <tr>
+                    <td class="p-1 pr-2 font-weight-bold"><b>Url</b></td>
+                    <td class="p-1 pl-2 font-weight-light text"><a href="{{ cv_data.basics.url }}" target="_blank" rel="noopener noreferrer">{{ cv_data.basics.url }}</a></td>
+                  </tr>
+                  {% endif %}
+                  {% if cv_data.basics.summary %}
+                  <tr>
+                    <td class="p-1 pr-2 font-weight-bold"><b>Summary</b></td>
+                    <td class="p-1 pl-2 font-weight-light text">{{ cv_data.basics.summary }}</td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
+          
+          {# Education Card #}
+          {% if cv_data.education and cv_data.education|length > 0 %}
+          <a class="anchor" id="education"></a>
+          <div class="card mt-3 p-3">
+            <h3 class="card-title font-weight-medium">Education</h3>
+            <div>
+              <ul class="card-text font-weight-light list-group list-group-flush">
+                {% for edu in cv_data.education %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-xs-2 col-sm-2 col-md-auto text-center date-column">
+                      {% set start_date = edu.startDate.split('-')[0] if edu.startDate else '' %}
+                      {% set end_date = edu.endDate.split('-')[0] if edu.endDate else 'Present' %}
+                      <span class="badge font-weight-bold cv-date-badge text-uppercase align-middle">{{ start_date }} - {{ end_date }}</span>
+                    </div>
+                    <div class="col mt-2 mt-md-0">
+                      <h6 class="title font-weight-bold">
+                        {% if edu.url %}<a href="{{ edu.url }}">{% endif %}
+                        {{ edu.studyType }}{% if edu.area %} in {{ edu.area }}{% endif %}
+                        {% if edu.url %}</a>{% endif %}
+                      </h6>
+                      <h6 style="font-size: 0.95rem">{{ edu.institution }}</h6>
+                      {% if edu.score %}
+                      <p style="font-size: 0.9rem; margin-bottom: 0.25rem;">GPA: {{ edu.score }}</p>
+                      {% endif %}
+                      {% if edu.courses and edu.courses|length > 0 %}
+                      <ul class="items">
+                        {% for course in edu.courses %}
+                        <li><span class="item">{{ course }}</span></li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+          
+          {# Work Card - using JSON Resume standard #}
+          {% if cv_data.work and cv_data.work|length > 0 %}
+          <a class="anchor" id="work"></a>
+          <div class="card mt-3 p-3">
+            <h3 class="card-title font-weight-medium">Work</h3>
+            <div>
+              <ul class="card-text font-weight-light list-group list-group-flush">
+                {% for job in cv_data.work %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-xs-2 col-sm-2 col-md-auto text-center date-column">
+                      {% set start_date = job.startDate.split('-')[0] + '.' + job.startDate.split('-')[1] if job.startDate and '-' in job.startDate else job.startDate %}
+                      {% set end_date = job.endDate.split('-')[0] + '.' + job.endDate.split('-')[1] if job.endDate and '-' in job.endDate else 'Present' %}
+                      <span class="badge font-weight-bold cv-date-badge text-uppercase align-middle">{{ start_date }} - {{ end_date }}</span>
+                      {% if job.location %}
+                      <p class="location mt-1">
+                        <i class="fa-solid fa-location-dot iconlocation"></i>
+                        {{ job.location }}
+                      </p>
+                      {% endif %}
+                    </div>
+                    <div class="col mt-2 mt-md-0">
+                      <h6 class="title font-weight-bold cv-role-title">
+                        {% if job.url %}<a href="{{ job.url }}" target="_blank">{% endif %}
+                        {{ job.position }}
+                        {% if job.url %}</a>{% endif %}
+                      </h6>
+                      <h6 class="cv-company">{{ job.name }}</h6>
+                      {% if job.summary %}
+                      <p class="cv-summary">{{ job.summary }}</p>
+                      {% endif %}
+                      {% if job.highlights and job.highlights|length > 0 %}
+                      <ul class="items">
+                        {% for item in job.highlights %}
+                        <li><span class="item">{{ item }}</span></li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+          
+          {# Projects Card #}
+          {% if cv_data.projects and cv_data.projects|length > 0 %}
+          <a class="anchor" id="projects"></a>
+          <div class="card mt-3 p-3">
+            <h3 class="card-title font-weight-medium">Projects</h3>
+            <div>
+              <ul class="card-text font-weight-light list-group list-group-flush">
+                {% for project in cv_data.projects %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col mt-2 mt-md-0">
+                      <h6 class="title font-weight-bold cv-role-title">
+                        {% if project.url %}
+                        <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer">{{ project.name }}</a>
+                        {% else %}
+                        {{ project.name }}
+                        {% endif %}
+                      </h6>
+                      {% if project.description %}
+                      <p class="cv-summary">{{ project.description }}</p>
+                      {% endif %}
+                      {% if project.highlights and project.highlights|length > 0 %}
+                      <ul class="items">
+                        {% for item in project.highlights %}
+                        <li><span class="item">{{ item }}</span></li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                      {% if project.keywords and project.keywords|length > 0 %}
+                      <div class="cv-keywords mt-2">
+                        {% for keyword in project.keywords %}
+                        <span class="badge badge-primary">{{ keyword }}</span>
+                        {% endfor %}
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+          
+          {# Skills Card - JSON Resume format with categories #}
+          {% if cv_data.skills and cv_data.skills|length > 0 %}
+          <a class="anchor" id="skills"></a>
+          <div class="card mt-3 p-3">
+            <h3 class="card-title font-weight-medium">Skills</h3>
+            <div>
+              {% for skill_group in cv_data.skills %}
+              <div class="skill-group mb-3">
+                <h6 class="skill-category">
+                  {{ skill_group.name }}
+                  {% if skill_group.level %}<span class="skill-level text-muted">({{ skill_group.level }})</span>{% endif %}
+                </h6>
+                <div class="cv-keywords">
+                  {% for keyword in skill_group.keywords %}
+                  <span class="badge badge-primary">{{ keyword }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          
+          {# Interests Card #}
+          {% if cv_data.interests and cv_data.interests|length > 0 %}
+          <a class="anchor" id="interests"></a>
+          <div class="card mt-3 p-3">
+            <h3 class="card-title font-weight-medium">Interests</h3>
+            <div>
+              {% for interest in cv_data.interests %}
+              <div class="skill-group mb-3">
+                <h6 class="skill-category">{{ interest.name }}</h6>
+                {% if interest.keywords and interest.keywords|length > 0 %}
+                <div class="cv-keywords">
+                  {% for keyword in interest.keywords %}
+                  <span class="badge badge-primary">{{ keyword }}</span>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          
+          {# Profiles Card - from basics.profiles per JSON Resume standard #}
+          {% if cv_data.basics.profiles and cv_data.basics.profiles|length > 0 %}
+          <a class="anchor" id="profiles"></a>
+          <div class="card mt-3 p-3">
+            <h3 class="card-title font-weight-medium">Profiles</h3>
+            <div>
+              <table class="table table-sm table-borderless table-cv-map">
+                <tbody>
+                  {% for profile in cv_data.basics.profiles %}
+                  <tr>
+                    <td class="p-1 pr-2 font-weight-bold"><b>{{ profile.network }}</b></td>
+                    <td class="p-1 pl-2 font-weight-light text">
+                      <a href="{{ profile.url }}" target="_blank" rel="noopener noreferrer">
+                        {% if profile.username %}@{{ profile.username }}{% else %}{{ profile.url }}{% endif %}
+                      </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </article>
+  {% endif %}
+</div>
+{% endblock %}
