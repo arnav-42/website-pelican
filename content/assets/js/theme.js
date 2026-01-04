@@ -1,15 +1,14 @@
-// Theme toggle script - Matching al-folio behavior exactly
-// Cycles through: system -> light -> dark -> system
+// Theme toggle script - light/dark only, defaulting to system preference
 
 (function() {
   'use strict';
   
   // Get stored theme setting
-  function getThemeSetting() {
+  function getStoredTheme() {
     try {
-      return localStorage.getItem('theme') || 'system';
+      return localStorage.getItem('theme');
     } catch (e) {
-      return 'system';
+      return null;
     }
   }
   
@@ -18,22 +17,26 @@
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
   
-  // Compute actual theme from setting
-  function getComputedTheme(setting) {
-    return setting === 'system' ? getSystemTheme() : setting;
+  // Compute initial theme from storage or system
+  function getPreferredTheme() {
+    var stored = getStoredTheme();
+    if (stored === 'light' || stored === 'dark') {
+      return stored;
+    }
+    return getSystemTheme();
   }
   
   // Apply theme to document
-  function applyTheme(setting) {
-    var theme = getComputedTheme(setting);
+  function applyTheme(theme, persist) {
     document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.setAttribute('data-theme-setting', setting);
     
     // Store preference
-    try {
-      localStorage.setItem('theme', setting);
-    } catch (e) {
-      // localStorage not available
+    if (persist) {
+      try {
+        localStorage.setItem('theme', theme);
+      } catch (e) {
+        // localStorage not available
+      }
     }
     
     // Update tables for Bootstrap dark mode compatibility
@@ -47,28 +50,19 @@
     });
   }
   
-  // Toggle through theme settings: system -> light -> dark -> system
+  // Toggle between light and dark
   function toggleTheme() {
-    var current = getThemeSetting();
-    var next;
-    
-    if (current === 'system') {
-      next = 'light';
-    } else if (current === 'light') {
-      next = 'dark';
-    } else {
-      next = 'system';
-    }
-    
-    applyTheme(next);
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next, true);
   }
   
   // Listen for system theme changes
   var mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   mediaQuery.addEventListener('change', function() {
-    var setting = getThemeSetting();
-    if (setting === 'system') {
-      applyTheme('system');
+    var stored = getStoredTheme();
+    if (stored !== 'light' && stored !== 'dark') {
+      applyTheme(getSystemTheme(), false);
     }
   });
   
@@ -83,8 +77,7 @@
     }
     
     // Apply initial theme (may already be set in head, but ensure consistency)
-    var setting = getThemeSetting();
-    applyTheme(setting);
+    applyTheme(getPreferredTheme(), false);
   }
   
   // Run init when DOM is ready

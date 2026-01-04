@@ -261,18 +261,11 @@ img {
   display: none;
 }
 
-/* Default: show system icon */
-html[data-theme-setting="system"] #light-toggle-system {
+html[data-theme="dark"] #light-toggle-dark {
   display: inline-block !important;
 }
 
-/* When set to dark */
-html[data-theme-setting="dark"] #light-toggle-dark {
-  display: inline-block !important;
-}
-
-/* When set to light */
-html[data-theme-setting="light"] #light-toggle-light {
+html[data-theme="light"] #light-toggle-light {
   display: inline-block !important;
 }
 
@@ -679,6 +672,30 @@ span.item {
 .skill-level {
   font-weight: 400;
   font-size: 0.8rem;
+}
+
+/* ============================================
+   Projects + Demos Cards (al-folio style)
+   ============================================ */
+.projects a {
+  text-decoration: none;
+}
+
+.projects a:hover .card-title {
+  color: var(--global-theme-color);
+}
+
+.projects .card img {
+  width: 100%;
+}
+
+.projects .col {
+  padding-bottom: 1rem;
+}
+
+.project-meta {
+  font-size: 0.85rem;
+  color: var(--global-text-color-light);
 }
 
 /* ============================================

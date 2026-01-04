@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" data-theme-setting="system">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,20 +21,21 @@
   <!-- Dark Mode Script (in head to prevent flash) -->
   <script>
     (function() {
-      function getThemeSetting() {
-        try { return localStorage.getItem('theme') || 'system'; } 
-        catch(e) { return 'system'; }
+      function getStoredTheme() {
+        try { return localStorage.getItem('theme'); }
+        catch(e) { return null; }
       }
       function getSystemTheme() {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
-      function getComputedTheme(setting) {
-        return setting === 'system' ? getSystemTheme() : setting;
+      function getInitialTheme() {
+        var stored = getStoredTheme();
+        if (stored === 'light' || stored === 'dark') {
+          return stored;
+        }
+        return getSystemTheme();
       }
-      var setting = getThemeSetting();
-      var theme = getComputedTheme(setting);
-      document.documentElement.setAttribute('data-theme', theme);
-      document.documentElement.setAttribute('data-theme-setting', setting);
+      document.documentElement.setAttribute('data-theme', getInitialTheme());
     })();
   </script>
   
@@ -73,18 +74,19 @@
               <a class="nav-link" href="{{ SITEURL }}/">about</a>
             </li>
             
+            <!-- Projects -->
+            <li class="nav-item {% if 'projects' in current_url %}active{% endif %}">
+              <a class="nav-link" href="{{ SITEURL }}/projects.html">projects</a>
+            </li>
+
             <!-- Demos -->
             <li class="nav-item {% if 'demos' in current_url %}active{% endif %}">
               <a class="nav-link" href="{{ SITEURL }}/demos.html">demos</a>
             </li>
             
-            <!-- Dropdown for more items -->
-            <li class="nav-item dropdown {% if 'tools' in current_url or 'contact' in current_url %}active{% endif %}">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">more</a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item {% if 'tools' in current_url %}active{% endif %}" href="{{ SITEURL }}/tools.html">tools</a>
-                <a class="dropdown-item {% if 'contact' in current_url %}active{% endif %}" href="{{ SITEURL }}/contact.html">contact</a>
-              </div>
+            <!-- Contact -->
+            <li class="nav-item {% if 'contact' in current_url %}active{% endif %}">
+              <a class="nav-link" href="{{ SITEURL }}/contact.html">contact</a>
             </li>
             
             <!-- Theme Toggle -->
@@ -92,7 +94,6 @@
               <button id="light-toggle" title="Change theme">
                 <i class="fa-solid fa-moon" id="light-toggle-dark"></i>
                 <i class="fa-solid fa-sun" id="light-toggle-light"></i>
-                <i class="fa-solid fa-circle-half-stroke" id="light-toggle-system"></i>
               </button>
             </li>
           </ul>
