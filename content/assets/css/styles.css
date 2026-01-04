@@ -681,6 +681,42 @@ span.item {
   font-size: 0.8rem;
 }
 
+/* ============================================
+   Demo Page Styles
+   ============================================ */
+.demo-container {
+  margin: 2rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--global-divider-color);
+  background: var(--global-card-bg-color);
+}
+
+.demo-iframe {
+  width: 100%;
+  height: 700px;
+  border: none;
+  display: block;
+}
+
+.demo-fullscreen {
+  text-align: right;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  background: var(--global-bg-color);
+  border-top: 1px solid var(--global-divider-color);
+}
+
+.demo-fullscreen a {
+  color: var(--global-theme-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.demo-fullscreen a:hover {
+  text-decoration: underline;
+}
+
 /* List groups for skills */
 div.list-groups {
   display: flex;

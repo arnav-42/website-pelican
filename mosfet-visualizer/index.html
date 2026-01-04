@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MOSFET Drain Current Visualizer</title>
+    <meta name="description" content="Interactive MOSFET drain current visualizer with Id vs Vds characteristics - supports NMOS/PMOS and Enhancement/Depletion modes" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <h1>MOSFET Visualizer</h1>
+        <p class="subtitle">Drag cards to rearrange • Hover over labels for info</p>
+      </header>
+
+      <!-- Canvas area for draggable cards -->
+      <main class="canvas" id="canvas">
+        
+        <!-- Control Panel Card -->
+        <div class="card draggable-card" id="card-control" data-card="control" style="left: 20px; top: 20px;">
+          <div class="card-header drag-handle">
+            <h2>Control Panel</h2>
+            <span class="drag-icon">⋮⋮</span>
+          </div>
+          <div class="card-content">
+            <!-- Device Type Toggle -->
+            <div class="input-section">
+              <h3>Device Type</h3>
+              <div class="toggle-group" id="device-type-toggle">
+                <button type="button" class="toggle-btn active" data-value="nmos">NMOS</button>
+                <button type="button" class="toggle-btn" data-value="pmos">PMOS</button>
+              </div>
+            </div>
+
+            <!-- Operating Mode Toggle -->
+            <div class="input-section">
+              <h3>Operating Mode</h3>
+              <div class="toggle-group" id="operating-mode-toggle">
+                <button type="button" class="toggle-btn active" data-value="enhancement">Enhancement</button>
+                <button type="button" class="toggle-btn" data-value="depletion">Depletion</button>
+              </div>
+            </div>
+            
+            <div class="input-section">
+              <h3>Terminal Voltages</h3>
+              
+              <div class="input-group">
+                <label for="input-vg" class="has-tooltip">
+                  V<sub>G</sub>
+                  <span class="tooltip">
+                    <strong>Gate Voltage (V<sub>G</sub>)</strong><br>
+                    The voltage applied to the gate terminal of the MOSFET, measured relative to ground.<br><br>
+                    Controls the channel conductivity and thus the drain current.
+                  </span>
+                </label>
+                <div class="input-wrap">
+                  <input type="number" id="input-vg" step="0.1" min="-10" max="10" value="3.0" />
+                  <div class="spin-btns" data-target="input-vg">
+                    <button type="button" class="spin up" aria-label="Increase Vg">▲</button>
+                    <button type="button" class="spin down" aria-label="Decrease Vg">▼</button>
+                  </div>
+                </div>
+                <span class="unit">V</span>
+              </div>
+              
+              <div class="input-group">
+                <label for="input-vd" class="has-tooltip">
+                  V<sub>D</sub>
+                  <span class="tooltip">
+                    <strong>Drain Voltage (V<sub>D</sub>)</strong><br>
+                    The voltage applied to the drain terminal, measured relative to ground.<br><br>
+                    Current flows from drain to source in NMOS (when ON).
+                  </span>
+                </label>
+                <div class="input-wrap">
+                  <input type="number" id="input-vd" step="0.1" min="-10" max="10" value="2.5" />
+                  <div class="spin-btns" data-target="input-vd">
+                    <button type="button" class="spin up" aria-label="Increase Vd">▲</button>
+                    <button type="button" class="spin down" aria-label="Decrease Vd">▼</button>
+                  </div>
+                </div>
+                <span class="unit">V</span>
+              </div>
+              
+              <div class="input-group">
+                <label for="input-vs" class="has-tooltip">
+                  V<sub>S</sub>
+                  <span class="tooltip">
+                    <strong>Source Voltage (V<sub>S</sub>)</strong><br>
+                    The voltage at the source terminal, measured relative to ground.<br><br>
+                    Often connected to ground (0V) for NMOS, or to V<sub>DD</sub> for PMOS.
+                  </span>
+                </label>
+                <div class="input-wrap">
+                  <input type="number" id="input-vs" step="0.1" min="-10" max="10" value="0.0" />
+                  <div class="spin-btns" data-target="input-vs">
+                    <button type="button" class="spin up" aria-label="Increase Vs">▲</button>
+                    <button type="button" class="spin down" aria-label="Decrease Vs">▼</button>
+                  </div>
+                </div>
+                <span class="unit">V</span>
+              </div>
+            </div>
+
+            <div class="input-section">
+              <h3>Device Parameters</h3>
+              
+              <div class="input-group">
+                <label for="input-vth" class="has-tooltip">
+                  V<sub>th</sub>
+                  <span class="tooltip">
+                    <strong>Threshold Voltage (V<sub>th</sub>)</strong><br>
+                    The minimum V<sub>GS</sub> required to create a conducting channel.<br><br>
+                    <em>NMOS Enhancement:</em> V<sub>th</sub> &gt; 0<br>
+                    <em>NMOS Depletion:</em> V<sub>th</sub> &lt; 0<br>
+                    <em>PMOS Enhancement:</em> V<sub>th</sub> &lt; 0<br>
+                    <em>PMOS Depletion:</em> V<sub>th</sub> &gt; 0
+                  </span>
+                </label>
+                <div class="input-wrap">
+                  <input type="number" id="input-vth" step="0.1" min="-5" max="5" value="1.0" />
+                  <div class="spin-btns" data-target="input-vth">
+                    <button type="button" class="spin up" aria-label="Increase Vth">▲</button>
+                    <button type="button" class="spin down" aria-label="Decrease Vth">▼</button>
+                  </div>
+                </div>
+                <span class="unit">V</span>
+              </div>
+
+              <div class="input-group">
+                <label for="input-k" class="has-tooltip">
+                  k
+                  <span class="tooltip tooltip-wide">
+                    <strong>Transconductance Parameter (k)</strong><br><br>
+                    <code>k = μ<sub>n</sub> · C<sub>ox</sub> · (W/L)</code><br><br>
+                    Where:<br>
+                    • <strong>μ<sub>n</sub></strong> = electron mobility (cm²/V·s)<br>
+                    • <strong>C<sub>ox</sub></strong> = oxide capacitance per unit area (F/cm²)<br>
+                    • <strong>W</strong> = channel width<br>
+                    • <strong>L</strong> = channel length<br><br>
+                    Determines the current-carrying capability of the MOSFET. Higher k means more current for the same voltages.
+                  </span>
+                </label>
+                <div class="input-wrap">
+                  <input type="number" id="input-k" step="0.1" min="0.1" max="10" value="0.5" />
+                  <div class="spin-btns" data-target="input-k">
+                    <button type="button" class="spin up" aria-label="Increase k">▲</button>
+                    <button type="button" class="spin down" aria-label="Decrease k">▼</button>
+                  </div>
+                </div>
+                <span class="unit">mA/V²</span>
+              </div>
+            </div>
+
+            <div class="info-panel">
+              <h4>MOSFET Model</h4>
+              <div class="model-info" id="model-info-nmos">
+                <p><strong>NMOS:</strong> ON when V<sub>GS</sub> &gt; V<sub>th</sub></p>
+                <ul>
+                  <li><strong>Enhancement:</strong> V<sub>th</sub> &gt; 0</li>
+                  <li><strong>Depletion:</strong> V<sub>th</sub> &lt; 0</li>
+                </ul>
+              </div>
+              <div class="model-info" id="model-info-pmos" style="display: none;">
+                <p><strong>PMOS:</strong> ON when V<sub>GS</sub> &lt; V<sub>th</sub></p>
+                <ul>
+                  <li><strong>Enhancement:</strong> V<sub>th</sub> &lt; 0</li>
+                  <li><strong>Depletion:</strong> V<sub>th</sub> &gt; 0</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plot Card -->
+        <div class="card draggable-card card-plot" id="card-plot" data-card="plot" style="left: 360px; top: 20px;">
+          <div class="card-header drag-handle">
+            <h2>I-V Characteristics (Drag Graph to Adjust)</h2>
+            <span class="drag-icon">⋮⋮</span>
+          </div>
+          <div class="card-content plot-card-content">
+            <div id="plot"></div>
+            <div class="plot-hint">↔ Horizontal: Vds &nbsp;|&nbsp; ↕ Vertical: Vgs</div>
+          </div>
+        </div>
+
+        <!-- Computed Values Card -->
+        <div class="card draggable-card card-values" id="card-values" data-card="values" style="left: 1060px; top: 20px;">
+          <div class="card-header drag-handle">
+            <h2>Computed Values</h2>
+            <span class="drag-icon">⋮⋮</span>
+          </div>
+          <div class="card-content">
+            <div class="computed-values">
+              <div class="value-row">
+                <span class="label has-tooltip" id="label-vgs">
+                  V<sub>GS</sub>
+                  <span class="tooltip">
+                    <strong>Gate-Source Voltage</strong><br>
+                    V<sub>GS</sub> = V<sub>G</sub> − V<sub>S</sub><br><br>
+                    The voltage difference between gate and source. This is what controls whether the MOSFET is ON or OFF.
+                  </span>
+                </span>
+                <span class="value" id="display-vgs">3.00 V</span>
+              </div>
+              
+              <div class="value-row">
+                <span class="label has-tooltip" id="label-vds">
+                  V<sub>DS</sub>
+                  <span class="tooltip">
+                    <strong>Drain-Source Voltage</strong><br>
+                    V<sub>DS</sub> = V<sub>D</sub> − V<sub>S</sub><br><br>
+                    The voltage across the channel. Determines the operating region (triode vs saturation).
+                  </span>
+                </span>
+                <span class="value" id="display-vds">2.50 V</span>
+              </div>
+              
+              <div class="value-row">
+                <span class="label has-tooltip" id="label-id">
+                  I<sub>D</sub>
+                  <span class="tooltip tooltip-wide">
+                    <strong>Drain Current</strong><br><br>
+                    <em>Cutoff:</em> I<sub>D</sub> = 0<br><br>
+                    <em>Triode:</em><br>
+                    I<sub>D</sub> = k[(V<sub>GS</sub>−V<sub>th</sub>)V<sub>DS</sub> − ½V<sub>DS</sub>²]<br><br>
+                    <em>Saturation:</em><br>
+                    I<sub>D</sub> = ½k(V<sub>GS</sub>−V<sub>th</sub>)²
+                  </span>
+                </span>
+                <span class="value" id="display-id">0.000 mA</span>
+              </div>
+              
+              <div class="value-row">
+                <span class="label has-tooltip">
+                  Region
+                  <span class="tooltip">
+                    <strong>Operating Region</strong><br><br>
+                    <em>Cutoff:</em> V<sub>GS</sub> ≤ V<sub>th</sub><br>
+                    <em>Triode:</em> V<sub>DS</sub> &lt; V<sub>OV</sub><br>
+                    <em>Saturation:</em> V<sub>DS</sub> ≥ V<sub>OV</sub>
+                  </span>
+                </span>
+                <span class="value" id="display-region">—</span>
+              </div>
+
+              <div class="value-row value-row-vov">
+                <span class="label has-tooltip">
+                  V<sub>OV</sub>
+                  <span class="tooltip">
+                    <strong>Overdrive Voltage</strong><br>
+                    V<sub>OV</sub> = V<sub>GS</sub> − V<sub>th</sub><br><br>
+                    The "excess" voltage above threshold. Determines the boundary between triode and saturation regions.
+                  </span>
+                </span>
+                <span class="value" id="display-vov">2.00 V</span>
+              </div>
+            </div>
+
+            <div class="region-indicator">
+              <div class="region-bar">
+                <div class="region-section region-cutoff" data-region="cutoff">Cutoff</div>
+                <div class="region-section region-triode" data-region="triode">Triode</div>
+                <div class="region-section region-saturation" data-region="saturation">Saturation</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <footer class="footer">
+        <p>MOSFET Visualizer • Drag cards to rearrange • Hover over labels for info</p>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

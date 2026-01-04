@@ -30,6 +30,9 @@ STATIC_PATHS = [
     "notes",
 ]
 
+# Don't process HTML files as content - keep them as static
+READERS = {"html": None}
+
 # Expose CV data (JSON) to Jinja templates
 def _load_cv_data() -> dict | None:
     try:
