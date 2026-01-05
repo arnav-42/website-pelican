@@ -1,8 +1,7 @@
 ## Site: www.arnav.id
 [![CI](https://github.com/arnav-42/website/actions/workflows/ci.yml/badge.svg)](https://github.com/arnav-42/website/actions/workflows/ci.yml)
 
-
-I now use [Pelican](https://getpelican.com) for templating and content management.
+**This is my experimental site where I push and test changes before deploying to my main website at [www.arnav.id](https://www.arnav.id/).**
 
 ### Stack
 - Pelican (Python static site generator)
